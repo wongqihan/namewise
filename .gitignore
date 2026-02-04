@@ -22,3 +22,7 @@ Thumbs.db
 .next/
 dist/
 build/
+web/node_modules/
+web/.next/
+web/gcp-key.json
+web/.env*
