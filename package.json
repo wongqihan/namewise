@@ -1,0 +1,19 @@
+{
+  "name": "namewise",
+  "version": "1.0.0",
+  "description": "AI-powered name pronunciation and cultural etiquette guide for LinkedIn.",
+  "main": "generate-icons.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "canvas": "^3.2.1"
+  }
+}

@@ -1,0 +1,426 @@
+/* NameWise Content Script Styles */
+
+/* CSS Variables matching design spec */
+:root {
+    --nw-primary: hsl(260, 80%, 65%);
+    --nw-primary-dark: hsl(260, 80%, 55%);
+    --nw-warning: hsl(45, 100%, 85%);
+    --nw-warning-border: hsl(45, 100%, 50%);
+    --nw-text: hsl(220, 20%, 10%);
+    --nw-text-secondary: hsl(220, 10%, 40%);
+    --nw-glass: hsla(0, 0%, 100%, 0.92);
+    --nw-glass-border: hsla(0, 0%, 100%, 0.3);
+    --nw-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --nw-radius: 20px;
+    --nw-radius-sm: 8px;
+}
+
+/* Floating Bubble */
+.namewise-bubble {
+    position: absolute;
+    z-index: 999999;
+    transform: translate(-50%, -100%) scale(0);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease;
+    cursor: pointer;
+}
+
+.namewise-bubble-visible {
+    transform: translate(-50%, -100%) scale(1);
+}
+
+.namewise-bubble-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--nw-primary), var(--nw-primary-dark));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.namewise-bubble:hover .namewise-bubble-icon {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Card */
+.namewise-card {
+    position: absolute;
+    z-index: 999999;
+    width: 380px;
+    max-width: calc(100vw - 40px);
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.namewise-card-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.namewise-card-closing {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+}
+
+.namewise-card-content {
+    background: var(--nw-glass);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--nw-glass-border);
+    border-radius: var(--nw-radius);
+    box-shadow: var(--nw-shadow);
+    padding: 24px;
+    position: relative;
+}
+
+/* Close Button */
+.namewise-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--nw-text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.namewise-close:hover {
+    background: hsla(0, 0%, 0%, 0.05);
+}
+
+/* Loading State */
+.namewise-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    color: var(--nw-text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.namewise-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid hsla(260, 80%, 65%, 0.2);
+    border-top-color: var(--nw-primary);
+    border-radius: 50%;
+    animation: namewise-spin 0.8s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes namewise-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Header */
+.namewise-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.namewise-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nw-text);
+    margin: 0;
+}
+
+.namewise-confidence {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.namewise-confidence-high {
+    background: hsl(140, 60%, 90%);
+    color: hsl(140, 60%, 30%);
+}
+
+.namewise-confidence-medium {
+    background: hsl(45, 100%, 90%);
+    color: hsl(45, 80%, 30%);
+}
+
+.namewise-confidence-low {
+    background: hsl(0, 70%, 90%);
+    color: hsl(0, 60%, 40%);
+}
+
+/* Pronunciation (Hero) */
+.namewise-pronunciation {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--nw-text);
+    margin-bottom: 16px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+/* Info Box */
+.namewise-info {
+    background: hsla(200, 90%, 60%, 0.08);
+    border-radius: var(--nw-radius-sm);
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.namewise-info-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--nw-text);
+}
+
+.namewise-info-row+.namewise-info-row {
+    margin-top: 6px;
+}
+
+.namewise-info-icon {
+    font-size: 14px;
+}
+
+/* Warning Box */
+.namewise-warning {
+    background: var(--nw-warning);
+    border-left: 4px solid var(--nw-warning-border);
+    border-radius: var(--nw-radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--nw-text);
+}
+
+.namewise-warning-icon {
+    font-size: 14px;
+}
+
+/* Tip Box */
+.namewise-tip {
+    background: hsla(200, 90%, 60%, 0.05);
+    border-radius: var(--nw-radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--nw-text-secondary);
+}
+
+.namewise-tip-icon {
+    font-size: 14px;
+}
+
+/* Play Button */
+.namewise-play-btn {
+    width: 100%;
+    height: 44px;
+    background: linear-gradient(135deg, var(--nw-primary), var(--nw-primary-dark));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.namewise-play-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.namewise-play-btn:active {
+    transform: scale(0.98);
+}
+
+.namewise-play-btn:disabled {
+    background: hsl(220, 10%, 70%);
+    cursor: not-allowed;
+}
+
+.namewise-play-btn.namewise-loading-audio {
+    background: hsl(220, 10%, 75%);
+    cursor: wait;
+}
+
+.namewise-playing {
+    animation: namewise-pulse 1s ease-in-out infinite;
+}
+
+@keyframes namewise-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.namewise-play-icon {
+    font-size: 16px;
+}
+
+/* Footer */
+.namewise-footer {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid hsla(0, 0%, 0%, 0.05);
+    text-align: center;
+    font-size: 11px;
+    color: var(--nw-text-secondary);
+    opacity: 0.7;
+}
+
+.namewise-footer a {
+    color: var(--nw-text-secondary);
+    text-decoration: none;
+}
+
+.namewise-footer a:hover {
+    color: var(--nw-primary);
+}
+
+.namewise-report {
+    font-size: 12px;
+    color: var(--nw-text-secondary);
+    text-decoration: none;
+}
+
+.namewise-report:hover {
+    color: var(--nw-primary);
+    text-decoration: underline;
+}
+
+/* Error State */
+.namewise-error {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.namewise-error-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.namewise-error h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--nw-text);
+    margin: 0 0 8px 0;
+}
+
+.namewise-error p {
+    font-size: 14px;
+    color: var(--nw-text-secondary);
+    margin: 0 0 16px 0;
+}
+
+.namewise-retry-btn {
+    background: var(--nw-primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.namewise-retry-btn:hover {
+    background: var(--nw-primary-dark);
+}
+
+/* Content loaded animation */
+.namewise-content-loaded .namewise-header,
+.namewise-content-loaded .namewise-pronunciation,
+.namewise-content-loaded .namewise-info,
+.namewise-content-loaded .namewise-warning,
+.namewise-content-loaded .namewise-tip,
+.namewise-content-loaded .namewise-play-btn {
+    animation: namewise-fade-in 0.3s ease forwards;
+    opacity: 0;
+}
+
+.namewise-content-loaded .namewise-header {
+    animation-delay: 0ms;
+}
+
+.namewise-content-loaded .namewise-pronunciation {
+    animation-delay: 50ms;
+}
+
+.namewise-content-loaded .namewise-info {
+    animation-delay: 100ms;
+}
+
+.namewise-content-loaded .namewise-warning {
+    animation-delay: 150ms;
+}
+
+.namewise-content-loaded .namewise-tip {
+    animation-delay: 200ms;
+}
+
+.namewise-content-loaded .namewise-play-btn {
+    animation-delay: 250ms;
+}
+
+@keyframes namewise-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    .namewise-bubble,
+    .namewise-card,
+    .namewise-spinner,
+    .namewise-play-btn,
+    .namewise-playing,
+    .namewise-content-loaded * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
