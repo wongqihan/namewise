@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import textToSpeech from '@google-cloud/text-to-speech';
 
+// CORS headers for Chrome extension
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 // Initialize client - support both file and JSON string credentials
 const getClient = () => {
     // For Cloud Run: use JSON string from env
@@ -59,12 +66,16 @@ function detectLanguage(culturalNote: string): { code: string; voice: string } {
     return languageMap['default'];
 }
 
+export async function OPTIONS() {
+    return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(request: NextRequest) {
     try {
         const { name, cultural_note } = await request.json();
 
         if (!name) {
-            return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+            return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
         }
 
         // Clean name: remove parenthetical content like "(Simona)"
@@ -93,13 +104,13 @@ export async function POST(request: NextRequest) {
 
         const audioBase64 = Buffer.from(response.audioContent as Uint8Array).toString('base64');
 
-        return NextResponse.json({ audio_base64: audioBase64 });
+        return NextResponse.json({ audio_base64: audioBase64 }, { headers: corsHeaders });
 
     } catch (error) {
         console.error('TTS error:', error);
         return NextResponse.json(
             { error: 'Failed to generate audio' },
-            { status: 500 }
+            { status: 500, headers: corsHeaders }
         );
     }
 }
