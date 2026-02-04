@@ -1,5 +1,5 @@
 // NameWise Background Service Worker
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://namewise-api-107651002763.asia-southeast1.run.app/api';
 
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
