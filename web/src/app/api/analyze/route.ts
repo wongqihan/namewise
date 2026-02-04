@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-
 // CORS headers for Chrome extension
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
 };
+
+// Lazy initialization to avoid build-time errors
+let genAI: GoogleGenAI | null = null;
+function getGenAI() {
+    if (!genAI) {
+        genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+    }
+    return genAI;
+}
 
 export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
@@ -40,7 +47,7 @@ Respond in JSON format with these fields:
 
 Be concise. Focus on practical pronunciation help and avoiding cultural missteps.`;
 
-        const response = await genAI.models.generateContent({
+        const response = await getGenAI().models.generateContent({
             model: 'gemini-2.0-flash',
             contents: prompt,
             config: {

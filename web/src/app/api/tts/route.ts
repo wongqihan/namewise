@@ -8,20 +8,23 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// Initialize client - support both file and JSON string credentials
-const getClient = () => {
-    // For Cloud Run: use JSON string from env
-    if (process.env.GOOGLE_CREDENTIALS_JSON) {
-        const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
-        return new textToSpeech.TextToSpeechClient({ credentials });
+// Lazy initialization to avoid build-time errors
+let client: textToSpeech.TextToSpeechClient | null = null;
+function getClient() {
+    if (!client) {
+        // For Cloud Run: use JSON string from env
+        if (process.env.GOOGLE_CREDENTIALS_JSON) {
+            const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+            client = new textToSpeech.TextToSpeechClient({ credentials });
+        } else {
+            // For local dev: use file path
+            client = new textToSpeech.TextToSpeechClient({
+                keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+            });
+        }
     }
-    // For local dev: use file path
-    return new textToSpeech.TextToSpeechClient({
-        keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    });
-};
-
-const client = getClient();
+    return client;
+}
 
 // Language code mapping
 const languageMap: { [key: string]: { code: string; voice: string } } = {
@@ -96,7 +99,7 @@ export async function POST(request: NextRequest) {
             },
         };
 
-        const [response] = await client.synthesizeSpeech(ttsRequest);
+        const [response] = await getClient().synthesizeSpeech(ttsRequest);
 
         if (!response.audioContent) {
             throw new Error('No audio content returned');
