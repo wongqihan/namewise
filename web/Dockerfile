@@ -11,8 +11,7 @@ RUN npm ci
 # Copy source (excluding secrets via .dockerignore)
 COPY . .
 
-# Build with dummy env vars (actual values provided at runtime)
-ENV GEMINI_API_KEY=dummy_build_key
+# Build
 RUN npm run build
 
 # Production image
