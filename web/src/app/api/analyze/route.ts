@@ -32,33 +32,24 @@ export async function POST(request: NextRequest) {
         const contextParts = [];
         if (context?.location) contextParts.push(`Profile location: ${context.location}`);
         if (context?.headline) contextParts.push(`Professional headline: ${context.headline}`);
-        if (context?.company) contextParts.push(`Current company: ${context.company}`);
         const contextString = contextParts.length > 0 ? contextParts.join('\n') : '';
 
-        const prompt = `You are an expert linguist and cultural advisor specializing in names from all cultures around the world. Your goal is to help professionals correctly pronounce and respectfully address people they meet.
-
-Analyze this name and provide comprehensive, helpful information:
+        const prompt = `You are an expert linguist and cultural advisor specializing in names from all cultures. Help professionals correctly pronounce and respectfully address people they meet.
 
 Name: ${name}
-${contextString ? `\nContext from their LinkedIn profile:\n${contextString}` : ''}
+${contextString ? `\nContext:\n${contextString}` : ''}
 
-Respond in JSON format with these fields:
+Respond in JSON format:
 {
-    "confidence": "high" | "medium" | "low" - how confident you are in this analysis,
-    "sounds_like": "A clear phonetic pronunciation guide using simple English syllables. Make it intuitive for English speakers. For example: 'JEAN-pee-AIR' for Jean-Pierre, 'CHEE HAHN WONG' for Qi Han Wong. Use capital letters for stressed syllables.",
-    "given_name": "The person's given/first name(s)",
-    "family_name": "The person's family/surname",
-    "formality_warning": "Important formality or etiquette notes, e.g., 'In Japanese business culture, always use family name + san until invited to use given name' or 'In Chinese culture, the family name comes first' - or null if none",
-    "cultural_note": "A warm, informative cultural note about this name. Include interesting details like: common nicknames, famous people with this name, meaning of the name, regional variations, or fun conversation starters. Make it feel personal and helpful, not clinical. 2-3 sentences that would help someone connect with this person."
+    "confidence": "high" | "medium" | "low",
+    "sounds_like": "Clear phonetic pronunciation using simple English syllables. Use capital letters for stressed syllables. Example: 'JEAN-pee-AIR' for Jean-Pierre",
+    "given_name": "Given/first name(s)",
+    "family_name": "Family/surname",
+    "formality_warning": "Brief etiquette note if important (e.g., 'Use family name until invited to use given name') - or null",
+    "cultural_note": "1-2 helpful sentences: name meaning, common nicknames, or a relevant cultural insight. Be warm but concise."
 }
 
-Guidelines:
-- Be warm and conversational in the cultural_note, like a helpful colleague sharing insight
-- Include specific, actionable pronunciation tips
-- If the name has a meaning, share it!
-- Mention any common nicknames or variations they might go by
-- If there's a famous namesake, mention it as a memory aid
-- Consider the context (their location, company) when relevant`;
+Be conversational and helpful. Focus on practical pronunciation tips and cultural context.`;
 
         const response = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
