@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import textToSpeech from '@google-cloud/text-to-speech';
+
+// Force dynamic rendering (skip static generation)
+export const dynamic = 'force-dynamic';
 
 // CORS headers for Chrome extension
 const corsHeaders = {
@@ -7,24 +9,6 @@ const corsHeaders = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
 };
-
-// Lazy initialization to avoid build-time errors
-let client: textToSpeech.TextToSpeechClient | null = null;
-function getClient() {
-    if (!client) {
-        // For Cloud Run: use JSON string from env
-        if (process.env.GOOGLE_CREDENTIALS_JSON) {
-            const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
-            client = new textToSpeech.TextToSpeechClient({ credentials });
-        } else {
-            // For local dev: use file path
-            client = new textToSpeech.TextToSpeechClient({
-                keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-            });
-        }
-    }
-    return client;
-}
 
 // Language code mapping
 const languageMap: { [key: string]: { code: string; voice: string } } = {
@@ -81,6 +65,19 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
         }
 
+        // Dynamic import to avoid build-time evaluation
+        const textToSpeech = await import('@google-cloud/text-to-speech');
+
+        let client;
+        if (process.env.GOOGLE_CREDENTIALS_JSON) {
+            const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+            client = new textToSpeech.TextToSpeechClient({ credentials });
+        } else {
+            client = new textToSpeech.TextToSpeechClient({
+                keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+            });
+        }
+
         // Clean name: remove parenthetical content like "(Simona)"
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
 
@@ -99,7 +96,7 @@ export async function POST(request: NextRequest) {
             },
         };
 
-        const [response] = await getClient().synthesizeSpeech(ttsRequest);
+        const [response] = await client.synthesizeSpeech(ttsRequest);
 
         if (!response.audioContent) {
             throw new Error('No audio content returned');

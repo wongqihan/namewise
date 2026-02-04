@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenAI } from '@google/genai';
+
+// Force dynamic rendering (skip static generation)
+export const dynamic = 'force-dynamic';
 
 // CORS headers for Chrome extension
 const corsHeaders = {
@@ -7,15 +9,6 @@ const corsHeaders = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
 };
-
-// Lazy initialization to avoid build-time errors
-let genAI: GoogleGenAI | null = null;
-function getGenAI() {
-    if (!genAI) {
-        genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-    }
-    return genAI;
-}
 
 export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
@@ -28,6 +21,10 @@ export async function POST(request: NextRequest) {
         if (!name) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
         }
+
+        // Dynamic import to avoid build-time evaluation
+        const { GoogleGenAI } = await import('@google/genai');
+        const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
         const prompt = `You are an expert in names, their origins, and cultural context. Analyze this name and provide helpful information for someone meeting this person professionally.
 
@@ -47,7 +44,7 @@ Respond in JSON format with these fields:
 
 Be concise. Focus on practical pronunciation help and avoiding cultural missteps.`;
 
-        const response = await getGenAI().models.generateContent({
+        const response = await genAI.models.generateContent({
             model: 'gemini-2.0-flash',
             contents: prompt,
             config: {
