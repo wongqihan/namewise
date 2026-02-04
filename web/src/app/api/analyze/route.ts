@@ -45,7 +45,7 @@ Respond in JSON format:
     "sounds_like": "Clear phonetic pronunciation using simple English syllables. Use capital letters for stressed syllables. Example: 'JEAN-pee-AIR' for Jean-Pierre",
     "given_name": "Given/first name(s)",
     "family_name": "Family/surname",
-    "formality_warning": "Brief etiquette note if important (e.g., 'Use family name until invited to use given name') - or null",
+    "formality_warning": "Always include a brief, helpful etiquette tip about addressing this person (e.g., 'First names are fine in casual settings' or 'Use family name + san in Japanese business culture')",
     "cultural_note": "1-2 helpful sentences: name meaning, common nicknames, or a relevant cultural insight. Be warm but concise."
 }
 
