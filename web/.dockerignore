@@ -1,0 +1,9 @@
+# Don't include secrets in Docker image
+.env*
+gcp-key.json
+*-key.json
+.git
+.gitignore
+node_modules
+.next
+README.md
