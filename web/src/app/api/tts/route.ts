@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Force dynamic rendering (skip static generation)
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // CORS headers for Chrome extension
 const corsHeaders = {

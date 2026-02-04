@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Force dynamic rendering (skip static generation)
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // CORS headers for Chrome extension
 const corsHeaders = {
@@ -22,9 +23,11 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
         }
 
-        // Dynamic import to avoid build-time evaluation
-        const { GoogleGenAI } = await import('@google/genai');
-        const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+        // Use fetch to call Gemini API directly instead of SDK
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+            throw new Error('GEMINI_API_KEY not configured');
+        }
 
         const prompt = `You are an expert in names, their origins, and cultural context. Analyze this name and provide helpful information for someone meeting this person professionally.
 
@@ -44,15 +47,28 @@ Respond in JSON format with these fields:
 
 Be concise. Focus on practical pronunciation help and avoiding cultural missteps.`;
 
-        const response = await genAI.models.generateContent({
-            model: 'gemini-2.0-flash',
-            contents: prompt,
-            config: {
-                responseMimeType: 'application/json',
-            },
-        });
+        const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: {
+                        responseMimeType: 'application/json',
+                    },
+                }),
+            }
+        );
 
-        const text = response.text || '';
+        if (!response.ok) {
+            const error = await response.text();
+            console.error('Gemini API error:', error);
+            throw new Error('Gemini API request failed');
+        }
+
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
         // Parse the JSON response
         const jsonMatch = text.match(/\{[\s\S]*\}/);
