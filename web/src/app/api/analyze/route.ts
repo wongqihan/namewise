@@ -76,7 +76,22 @@ Be concise. Focus on practical pronunciation help and avoiding cultural missteps
             throw new Error('Invalid response format');
         }
 
-        const analysis = JSON.parse(jsonMatch[0]);
+        const rawAnalysis = JSON.parse(jsonMatch[0]);
+
+        // Transform to match expected format for content.js
+        const analysis = {
+            confidence: rawAnalysis.confidence,
+            sounds_like: rawAnalysis.sounds_like,
+            pronunciation: rawAnalysis.sounds_like, // Alias for backward compatibility
+            components: {
+                given_name: rawAnalysis.given_name,
+                family_name: rawAnalysis.family_name,
+            },
+            profile_location: rawAnalysis.location,
+            warnings: rawAnalysis.formality_warning ? [rawAnalysis.formality_warning] : [],
+            cultural_note: rawAnalysis.cultural_note,
+        };
+
         return NextResponse.json(analysis, { headers: corsHeaders });
 
     } catch (error) {
