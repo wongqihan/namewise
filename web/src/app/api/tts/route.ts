@@ -60,7 +60,7 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
     try {
-        const { name, native_script, cultural_note } = await request.json();
+        const { name, native_script, detected_origin, cultural_note } = await request.json();
 
         if (!name) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
@@ -82,8 +82,8 @@ export async function POST(request: NextRequest) {
         // Use native script if available (e.g., 邱杰权), otherwise use romanized name
         const textToSpeak = native_script || name.replace(/\s*\([^)]*\)/g, '').trim();
 
-        // Detect language from cultural note
-        const langConfig = cultural_note ? detectLanguage(cultural_note) : languageMap['default'];
+        // Detect language from detected_origin (more reliable than parsing cultural_note)
+        const langConfig = detected_origin ? detectLanguage(detected_origin) : languageMap['default'];
 
         const ttsRequest = {
             input: { text: textToSpeak },

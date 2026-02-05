@@ -300,6 +300,7 @@ async function loadAudioAsync(data, button) {
       type: 'FETCH_TTS',
       name: selectedText,
       native_script: data.native_script, // Use native characters if available (e.g., 邱杰权)
+      detected_origin: data.detected_origin, // For reliable language detection
       sounds_like: data.sounds_like || data.tts_text,
       cultural_note: data.cultural_note
     });

@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (request.type === 'FETCH_TTS') {
         // Use timeout to avoid service worker dying
-        fetchTTSWithTimeout(request.name, request.native_script, request.sounds_like, request.cultural_note, 25000)
+        fetchTTSWithTimeout(request.name, request.native_script, request.detected_origin, request.sounds_like, request.cultural_note, 25000)
             .then(result => sendResponse({ success: true, audio_base64: result.audio_base64 }))
             .catch(error => {
                 console.error('[NameWise] TTS fetch error:', error.message);
@@ -38,7 +38,7 @@ async function analyzeName(name, context) {
     return response.json();
 }
 
-async function fetchTTSWithTimeout(name, native_script, sounds_like, cultural_note, timeoutMs) {
+async function fetchTTSWithTimeout(name, native_script, detected_origin, sounds_like, cultural_note, timeoutMs) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -48,7 +48,7 @@ async function fetchTTSWithTimeout(name, native_script, sounds_like, cultural_no
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, native_script, sounds_like, cultural_note }),
+            body: JSON.stringify({ name, native_script, detected_origin, sounds_like, cultural_note }),
             signal: controller.signal,
         });
 
