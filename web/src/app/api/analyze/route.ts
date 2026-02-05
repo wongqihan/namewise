@@ -96,7 +96,7 @@ Respond in JSON:
     "given_name": "Given/first name(s) - include English name if present",
     "family_name": "Family/surname",
     "formality_warning": "Brief etiquette tip for addressing this person",
-    "cultural_note": "1-2 sentences: name meaning, nicknames, or cultural insight. Be warm and concise."
+    "cultural_note": "1-2 sentences of cultural insight. Do NOT guess or assume specific Chinese characters from romanized names (same pinyin can map to many different characters). Focus on general cultural context, common surname origins, or naming conventions."
 }`;
 
         const response = await fetch(
