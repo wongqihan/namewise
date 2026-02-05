@@ -92,8 +92,10 @@ export async function POST(request: NextRequest) {
                 .replace(/\bMohd\b\.?/gi, 'Mohammad')
                 .replace(/\bSk\b\.?/gi, 'Sheikh')
                 .replace(/\bDr\b\.?/gi, 'Doctor')
-                // Pronunciation hints for tricky surnames
-                .replace(/\bNg\b/g, 'Ung'); // Hokkien/Cantonese "Ng" sounds like "Ung"
+                .replace(/\bPhD\b/gi, '') // Remove PhD suffix
+                // Pronunciation hints for tricky Chinese names
+                .replace(/\bNg\b/g, 'Ung') // Hokkien/Cantonese "Ng" sounds like "Ung"
+                .replace(/\bChi\b/g, 'Chee'); // Cantonese "Chi" sounds like "Chee", not "Kai"
         };
 
         // Clean native_script - remove any metadata like "(Simplified Chinese)"
