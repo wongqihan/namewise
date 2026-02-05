@@ -69,10 +69,11 @@ PHONETIC RULES BY LANGUAGE (apply based on detected origin):
 
 **European names:** Use standard phonetic approximations.
 
-**IMPORTANT for Chinese names:** Detect the romanization style:
-- Hokkien (Singapore/Malaysia): Ong, Tan, Lim, Goh, Ng, Teo, Koh, Chua, Tay, Heng → tts_language: "english"
-- Cantonese (Hong Kong): Wong, Chan, Leung, Lau, Cheung, Ng, Tam → tts_language: "english"
-- Pinyin (Mainland China): Wang, Chen, Lin, Zhang, Liu, Huang → tts_language: "mandarin"
+**CRITICAL for Chinese names - Detect romanization style from SURNAME (most reliable indicator):**
+- Hokkien surnames (Singapore/Malaysia): Ong, Tan, Lim, Goh, Ng, Teo, Koh, Chua, Tay, Heng, Yeo, Wee, Phua → tts_language: "english", detected_origin: "Singaporean Chinese"
+- Cantonese surnames (Hong Kong): Wong, Chan, Leung, Lau, Cheung, Tam, Fung, Ho, Chow, Yip → tts_language: "english", detected_origin: "Cantonese Chinese"
+- Pinyin surnames (Mainland China): Wang, Chen, Lin, Zhang, Liu, Huang, Li, Wu, Yang, Zhou → tts_language: "mandarin", detected_origin: "Mandarin Chinese"
+**The SURNAME is the primary indicator.** Even if the given name looks like pinyin, use the surname to determine dialect.
 If profile location is Singapore, Malaysia, Hong Kong, US, UK, Australia → default to "english" for Chinese names.
 
 Respond in JSON:
