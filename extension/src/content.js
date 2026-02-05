@@ -10,6 +10,13 @@ let currentCard = null;
 let selectedText = '';
 let selectionContext = {};
 
+// Helper: Check if culture uses family name first
+function isFamilyFirst(origin) {
+  if (!origin) return false;
+  const familyFirstCultures = ['chinese', 'japanese', 'korean', 'vietnamese', 'hungarian'];
+  return familyFirstCultures.some(c => origin.toLowerCase().includes(c));
+}
+
 // Initialize on page load
 document.addEventListener('mouseup', handleSelection);
 document.addEventListener('keydown', handleKeydown);
@@ -210,7 +217,10 @@ function renderCardContent(data) {
     <div class="namewise-info">
       <div class="namewise-info-row">
         <span class="namewise-info-icon">👤</span>
-        <span>Given: ${escapeHtml(data.components?.given_name || 'N/A')} | Family: ${escapeHtml(data.components?.family_name || 'N/A')}</span>
+        <span>${isFamilyFirst(data.detected_origin)
+      ? `Family: ${escapeHtml(data.components?.family_name || 'N/A')} | Given: ${escapeHtml(data.components?.given_name || 'N/A')}`
+      : `Given: ${escapeHtml(data.components?.given_name || 'N/A')} | Family: ${escapeHtml(data.components?.family_name || 'N/A')}`
+    }</span>
       </div>
       ${data.profile_location ? `
         <div class="namewise-info-row">

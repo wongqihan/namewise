@@ -73,7 +73,7 @@ Respond in JSON:
 {
     "confidence": "high" | "medium" | "low",
     "detected_origin": "Language/culture of origin (e.g., 'Mandarin Chinese', 'Japanese', 'Korean')",
-    "sounds_like": "Phonetic pronunciation following the rules above. Use capital letters for stressed syllables.",
+    "sounds_like": "Phonetic pronunciation following the rules above. For Chinese/Japanese/Korean/Vietnamese names, use family-name-first order (e.g., 'CHIU jyeh-CHWAN' not 'jyeh-CHWAN CHIU'). Use capital letters for stressed syllables.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s)",
     "family_name": "Family/surname",
