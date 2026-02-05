@@ -85,13 +85,15 @@ export async function POST(request: NextRequest) {
         const langSource = tts_language || detected_origin || 'english';
         const langConfig = detectLanguage(langSource);
 
-        // Expand common name abbreviations for TTS
+        // Expand common name abbreviations and pronunciation hints for TTS
         const expandAbbreviations = (text: string) => {
             return text
                 .replace(/\bMd\b\.?/gi, 'Muhammad')
                 .replace(/\bMohd\b\.?/gi, 'Mohammad')
                 .replace(/\bSk\b\.?/gi, 'Sheikh')
-                .replace(/\bDr\b\.?/gi, 'Doctor');
+                .replace(/\bDr\b\.?/gi, 'Doctor')
+                // Pronunciation hints for tricky surnames
+                .replace(/\bNg\b/g, 'Ung'); // Hokkien/Cantonese "Ng" sounds like "Ung"
         };
 
         // Clean native_script - remove any metadata like "(Simplified Chinese)"
