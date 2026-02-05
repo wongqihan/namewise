@@ -217,7 +217,7 @@ function renderCardContent(data) {
     <div class="namewise-info">
       <div class="namewise-info-row">
         <span class="namewise-info-icon">👤</span>
-        <span>${isFamilyFirst(data.detected_origin)
+        <span>${(isFamilyFirst(data.detected_origin) && !data.has_english_name)
       ? `Family: ${escapeHtml(data.components?.family_name || 'N/A')} | Given: ${escapeHtml(data.components?.given_name || 'N/A')}`
       : `Given: ${escapeHtml(data.components?.given_name || 'N/A')} | Family: ${escapeHtml(data.components?.family_name || 'N/A')}`
     }</span>
@@ -296,9 +296,10 @@ function renderError(message) {
 // Load audio asynchronously from TTS endpoint
 async function loadAudioAsync(data, button) {
   try {
-    // For CJK cultures, reorder name to family-first to match phonetic display
+    // For CJK cultures WITHOUT English names, reorder to family-first
+    // If has English name (Andy Low), keep original order
     let ttsName = selectedText;
-    if (isFamilyFirst(data.detected_origin) && data.components?.family_name && data.components?.given_name) {
+    if (isFamilyFirst(data.detected_origin) && !data.has_english_name && data.components?.family_name && data.components?.given_name) {
       ttsName = `${data.components.family_name} ${data.components.given_name}`;
     }
 

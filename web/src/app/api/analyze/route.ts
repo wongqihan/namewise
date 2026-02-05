@@ -84,9 +84,10 @@ Respond in JSON:
     "confidence": "high" | "medium" | "low",
     "detected_origin": "Language/culture of origin (e.g., 'Southern Chinese', 'Arabic', 'Japanese', 'Korean')",
     "tts_language": "Match the name's origin: 'arabic' for Arabic names, 'japanese' for Japanese, etc. Only Southern Chinese uses 'english'.",
-    "sounds_like": "Phonetic pronunciation following the rules above. For Chinese/Japanese/Korean/Vietnamese names, use family-name-first order (e.g., 'CHIU jyeh-CHWAN' not 'jyeh-CHWAN CHIU'). Use capital letters for stressed syllables.",
+    "has_english_name": "true if the name includes an English/Western given name (e.g., Andy, Kevin, Justin), false otherwise",
+    "sounds_like": "Phonetic pronunciation. For CJK names without English given name: family-first (WONG chee-HAHN). For CJK with English given name: English-first (AN-dee LOW). Use capitals for stress.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
-    "given_name": "Given/first name(s)",
+    "given_name": "Given/first name(s) - include English name if present",
     "family_name": "Family/surname",
     "formality_warning": "Brief etiquette tip for addressing this person",
     "cultural_note": "1-2 sentences: name meaning, nicknames, or cultural insight. Be warm and concise."
@@ -129,6 +130,7 @@ Respond in JSON:
             confidence: rawAnalysis.confidence,
             detected_origin: rawAnalysis.detected_origin,
             tts_language: rawAnalysis.tts_language || 'english', // For smart TTS voice selection
+            has_english_name: rawAnalysis.has_english_name === true || rawAnalysis.has_english_name === 'true',
             sounds_like: rawAnalysis.sounds_like,
             pronunciation: rawAnalysis.sounds_like,
             native_script: rawAnalysis.native_script || null, // For TTS to use native characters
