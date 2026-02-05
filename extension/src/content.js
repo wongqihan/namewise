@@ -307,7 +307,8 @@ async function loadAudioAsync(data, button) {
       type: 'FETCH_TTS',
       name: ttsName,
       native_script: data.native_script,
-      tts_language: data.tts_language, // Smart language selection (e.g., 'english' for SG/MY Chinese)
+      tts_language: data.has_english_name ? 'english' : data.tts_language, // Override to English if has English name
+      has_english_name: data.has_english_name,
       detected_origin: data.detected_origin,
       sounds_like: data.sounds_like || data.tts_text,
       cultural_note: data.cultural_note

@@ -94,10 +94,18 @@ export async function POST(request: NextRequest) {
                 .replace(/\bDr\b\.?/gi, 'Doctor');
         };
 
+        // Clean native_script - remove any metadata like "(Simplified Chinese)"
+        const cleanNativeScript = (script: string | null) => {
+            if (!script) return null;
+            // Remove parenthetical content and period/comma artifacts
+            return script.replace(/\s*\([^)]*\)/g, '').replace(/[.,;:]+\s*$/g, '').trim();
+        };
+
         // For English TTS, always use romanized name. For CJK, use native script if available.
-        const useNativeScript = native_script && langConfig.code !== 'en-US';
+        const cleanedNativeScript = cleanNativeScript(native_script);
+        const useNativeScript = cleanedNativeScript && langConfig.code !== 'en-US';
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
-        const textToSpeak = expandAbbreviations(useNativeScript ? native_script : cleanName);
+        const textToSpeak = expandAbbreviations(useNativeScript ? cleanedNativeScript : cleanName);
 
         const ttsRequest = {
             input: { text: textToSpeak },
