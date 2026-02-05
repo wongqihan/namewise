@@ -34,23 +34,52 @@ export async function POST(request: NextRequest) {
         if (context?.headline) contextParts.push(`Professional headline: ${context.headline}`);
         const contextString = contextParts.length > 0 ? contextParts.join('\n') : '';
 
-        const prompt = `You are an expert linguist and cultural advisor specializing in names from all cultures. Help professionals correctly pronounce and respectfully address people they meet.
+        const prompt = `You are an expert linguist specializing in name pronunciation across all cultures. Help professionals correctly pronounce names.
 
 Name: ${name}
 ${contextString ? `\nContext:\n${contextString}` : ''}
 
-Respond in JSON format:
+PHONETIC RULES BY LANGUAGE (apply based on detected origin):
+
+**Mandarin Chinese (pinyin):**
+- "ie" → "yeh" (not "ee"), "iu" → "yo", "ui" → "way", "üe" → "weh"
+- "q" → "ch", "x" → "sh", "zh" → "j", "c" → "ts", "z" → "dz"
+- Example: Jiequan → "jyeh-CHWAN", Xiaoming → "shyow-MING"
+
+**Japanese:**
+- Vowels are pure: a=ah, i=ee, u=oo, e=eh, o=oh
+- Double consonants: slight pause. Long vowels: extend sound.
+- Example: Kenji → "KEN-jee", Yuki → "YOO-kee"
+
+**Korean:**
+- "eo" → "uh", "eu" → "uh" (short), "ae" → "eh", "oe" → "weh"
+- Example: Jiyeon → "jee-YUHN", Seojun → "suh-JOON"
+
+**Vietnamese:**
+- Tones affect meaning but for English speakers focus on syllables
+- "Nguyen" → "nWIN" or "noo-YEN", "Phuong" → "fuhng"
+
+**Arabic:**
+- Emphasize guttural sounds in transcription
+- Example: Fatima → "FAH-tee-mah", Ahmed → "AH-med"
+
+**Hindi/South Asian:**
+- "a" at end is often schwa (uh), retroflex consonants
+- Example: Priya → "PREE-yah", Aditya → "ah-DIT-yah"
+
+**European names:** Use standard phonetic approximations.
+
+Respond in JSON:
 {
     "confidence": "high" | "medium" | "low",
-    "sounds_like": "Clear phonetic pronunciation using simple English syllables. Use capital letters for stressed syllables. Example: 'JEAN-pee-AIR' for Jean-Pierre",
-    "native_script": "The name written in its native script/characters if applicable (e.g., 邱杰权 for a Chinese name, 田中太郎 for Japanese, Müller for German). Return null if the name is already in its native form or if unknown.",
+    "detected_origin": "Language/culture of origin (e.g., 'Mandarin Chinese', 'Japanese', 'Korean')",
+    "sounds_like": "Phonetic pronunciation following the rules above. Use capital letters for stressed syllables.",
+    "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s)",
     "family_name": "Family/surname",
-    "formality_warning": "Always include a brief, helpful etiquette tip about addressing this person (e.g., 'First names are fine in casual settings' or 'Use family name + san in Japanese business culture')",
-    "cultural_note": "1-2 helpful sentences: name meaning, common nicknames, or a relevant cultural insight. Be warm but concise."
-}
-
-Be conversational and helpful. Focus on practical pronunciation tips and cultural context.`;
+    "formality_warning": "Brief etiquette tip for addressing this person",
+    "cultural_note": "1-2 sentences: name meaning, nicknames, or cultural insight. Be warm and concise."
+}`;
 
         const response = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
@@ -87,6 +116,7 @@ Be conversational and helpful. Focus on practical pronunciation tips and cultura
         // Use actual profile location from context, not Gemini's guess
         const analysis = {
             confidence: rawAnalysis.confidence,
+            detected_origin: rawAnalysis.detected_origin,
             sounds_like: rawAnalysis.sounds_like,
             pronunciation: rawAnalysis.sounds_like,
             native_script: rawAnalysis.native_script || null, // For TTS to use native characters
