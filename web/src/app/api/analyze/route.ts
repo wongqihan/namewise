@@ -73,13 +73,17 @@ PHONETIC RULES BY LANGUAGE (apply based on detected origin):
 - Southern Chinese surnames (Hokkien/Cantonese/Hakka/Teochew - SG/MY/HK): Ong, Tan, Lim, Goh, Ng, Teo, Koh, Chua, Wong, Chan, Leung, Lau, Cheung, Ho, Yeo, Wee, Fung, Chow, Yip → tts_language: "english", detected_origin: "Southern Chinese"
 - Mandarin Pinyin surnames (Mainland China): Wang, Chen, Lin, Zhang, Liu, Huang, Li, Wu, Yang, Zhou, Xu, Zhao → tts_language: "mandarin", detected_origin: "Mandarin Chinese"
 **The SURNAME is the primary indicator.** "Wong" = Southern Chinese (could be Cantonese/Hakka) → English. "Wang" = Pinyin → Mandarin.
-If profile location is Singapore, Malaysia, Hong Kong, US, UK, Australia → default to "english" for Chinese names.
+If profile location is Singapore, Malaysia, Hong Kong, US, UK, Australia → default to "english" for Chinese names ONLY.
+
+**tts_language rule:** Match the NAME'S origin language, not the person's location.
+- Arabic name (Fatima Hassan) in Dubai → tts_language: "arabic"
+- Chinese name (Wong Qi Han) in Singapore → tts_language: "english" (exception for Southern Chinese)
 
 Respond in JSON:
 {
     "confidence": "high" | "medium" | "low",
-    "detected_origin": "Language/culture of origin (e.g., 'Mandarin Chinese', 'Singaporean Chinese', 'Japanese', 'Korean')",
-    "tts_language": "The language for text-to-speech: 'english', 'mandarin', 'japanese', 'korean', 'vietnamese', etc. For Southeast Asian Chinese names, use 'english'.",
+    "detected_origin": "Language/culture of origin (e.g., 'Southern Chinese', 'Arabic', 'Japanese', 'Korean')",
+    "tts_language": "Match the name's origin: 'arabic' for Arabic names, 'japanese' for Japanese, etc. Only Southern Chinese uses 'english'.",
     "sounds_like": "Phonetic pronunciation following the rules above. For Chinese/Japanese/Korean/Vietnamese names, use family-name-first order (e.g., 'CHIU jyeh-CHWAN' not 'jyeh-CHWAN CHIU'). Use capital letters for stressed syllables.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s)",

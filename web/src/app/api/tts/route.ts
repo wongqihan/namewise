@@ -13,6 +13,8 @@ const corsHeaders = {
 
 // Language code mapping
 const languageMap: { [key: string]: { code: string; voice: string } } = {
+    'english': { code: 'en-US', voice: 'en-US-Wavenet-D' },
+    'southern': { code: 'en-US', voice: 'en-US-Wavenet-D' }, // Southern Chinese uses English
     'chinese': { code: 'cmn-CN', voice: 'cmn-CN-Wavenet-A' },
     'mandarin': { code: 'cmn-CN', voice: 'cmn-CN-Wavenet-A' },
     'cantonese': { code: 'yue-HK', voice: 'yue-HK-Standard-A' },
