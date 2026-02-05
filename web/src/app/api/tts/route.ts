@@ -105,9 +105,16 @@ export async function POST(request: NextRequest) {
             return script.replace(/\s*\([^)]*\)/g, '').replace(/[.,;:]+\s*$/g, '').trim();
         };
 
-        // For English TTS, always use romanized name. For CJK, use native script if available.
+        // For English TTS, always use romanized name. 
+        // For CJK (Chinese/Japanese/Korean), use native script if available.
+        // For Arabic/Korean: Use romanized because native scripts can add extra syllables
         const cleanedNativeScript = cleanNativeScript(native_script);
-        const useNativeScript = cleanedNativeScript && langConfig.code !== 'en-US';
+        const shouldUseRomanized =
+            langConfig.code === 'en-US' ||
+            langConfig.code.startsWith('ar-') ||  // Arabic: use romanized
+            langConfig.code.startsWith('ko-');     // Korean: use romanized
+
+        const useNativeScript = cleanedNativeScript && !shouldUseRomanized;
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
         const textToSpeak = expandAbbreviations(useNativeScript ? cleanedNativeScript : cleanName);
 
