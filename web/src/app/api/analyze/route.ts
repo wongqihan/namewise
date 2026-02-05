@@ -75,8 +75,14 @@ PHONETIC RULES BY LANGUAGE (apply based on detected origin):
 **The SURNAME is the primary indicator.** "Wong" = Southern Chinese (could be Cantonese/Hakka) → English. "Wang" = Pinyin → Mandarin.
 If profile location is Singapore, Malaysia, Hong Kong, US, UK, Australia → default to "english" for Chinese names ONLY.
 
+**IMPORTANT for Malay Muslim names:**
+- Names with "Bin" or "Binti" (patronymics) are MALAY, not Arabic → tts_language: "malay", detected_origin: "Malay"
+- Example: "Abdullah Bin Ahmad" → Malay (not Arabic), tts_language: "malay"
+- Do NOT use Arabic script for Malay names. Use romanized form only.
+
 **tts_language rule:** Match the NAME'S origin language, not the person's location.
-- Arabic name (Fatima Hassan) in Dubai → tts_language: "arabic"
+- Malay name (Abdullah Bin Ahmad) → tts_language: "malay", NO native_script
+- Arabic name (Fatima Hassan) in UAE without Bin/Binti → tts_language: "arabic"
 - Chinese name (Wong Qi Han) in Singapore → tts_language: "english" (exception for Southern Chinese)
 
 Respond in JSON:
