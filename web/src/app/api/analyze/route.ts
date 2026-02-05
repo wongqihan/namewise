@@ -43,6 +43,7 @@ Respond in JSON format:
 {
     "confidence": "high" | "medium" | "low",
     "sounds_like": "Clear phonetic pronunciation using simple English syllables. Use capital letters for stressed syllables. Example: 'JEAN-pee-AIR' for Jean-Pierre",
+    "native_script": "The name written in its native script/characters if applicable (e.g., 邱杰权 for a Chinese name, 田中太郎 for Japanese, Müller for German). Return null if the name is already in its native form or if unknown.",
     "given_name": "Given/first name(s)",
     "family_name": "Family/surname",
     "formality_warning": "Always include a brief, helpful etiquette tip about addressing this person (e.g., 'First names are fine in casual settings' or 'Use family name + san in Japanese business culture')",
@@ -88,6 +89,7 @@ Be conversational and helpful. Focus on practical pronunciation tips and cultura
             confidence: rawAnalysis.confidence,
             sounds_like: rawAnalysis.sounds_like,
             pronunciation: rawAnalysis.sounds_like,
+            native_script: rawAnalysis.native_script || null, // For TTS to use native characters
             components: {
                 given_name: rawAnalysis.given_name,
                 family_name: rawAnalysis.family_name,

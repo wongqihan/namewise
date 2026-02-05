@@ -289,6 +289,7 @@ async function loadAudioAsync(data, button) {
     const result = await chrome.runtime.sendMessage({
       type: 'FETCH_TTS',
       name: selectedText,
+      native_script: data.native_script, // Use native characters if available (e.g., 邱杰权)
       sounds_like: data.sounds_like || data.tts_text,
       cultural_note: data.cultural_note
     });

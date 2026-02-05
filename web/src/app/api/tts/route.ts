@@ -60,7 +60,7 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
     try {
-        const { name, cultural_note } = await request.json();
+        const { name, native_script, cultural_note } = await request.json();
 
         if (!name) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
@@ -79,14 +79,14 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // Clean name: remove parenthetical content like "(Simona)"
-        const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
+        // Use native script if available (e.g., 邱杰权), otherwise use romanized name
+        const textToSpeak = native_script || name.replace(/\s*\([^)]*\)/g, '').trim();
 
         // Detect language from cultural note
         const langConfig = cultural_note ? detectLanguage(cultural_note) : languageMap['default'];
 
         const ttsRequest = {
-            input: { text: cleanName },
+            input: { text: textToSpeak },
             voice: {
                 languageCode: langConfig.code,
                 name: langConfig.voice,
