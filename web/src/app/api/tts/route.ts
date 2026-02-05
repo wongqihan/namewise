@@ -83,10 +83,19 @@ export async function POST(request: NextRequest) {
         const langSource = tts_language || detected_origin || 'english';
         const langConfig = detectLanguage(langSource);
 
+        // Expand common name abbreviations for TTS
+        const expandAbbreviations = (text: string) => {
+            return text
+                .replace(/\bMd\b\.?/gi, 'Muhammad')
+                .replace(/\bMohd\b\.?/gi, 'Mohammad')
+                .replace(/\bSk\b\.?/gi, 'Sheikh')
+                .replace(/\bDr\b\.?/gi, 'Doctor');
+        };
+
         // For English TTS, always use romanized name. For CJK, use native script if available.
         const useNativeScript = native_script && langConfig.code !== 'en-US';
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
-        const textToSpeak = useNativeScript ? native_script : cleanName;
+        const textToSpeak = expandAbbreviations(useNativeScript ? native_script : cleanName);
 
         const ttsRequest = {
             input: { text: textToSpeak },
