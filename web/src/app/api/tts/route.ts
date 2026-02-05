@@ -60,7 +60,7 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
     try {
-        const { name, native_script, detected_origin, cultural_note } = await request.json();
+        const { name, native_script, tts_language, detected_origin, cultural_note } = await request.json();
 
         if (!name) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
@@ -79,13 +79,14 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // Detect language from detected_origin (more reliable than parsing cultural_note)
-        const langConfig = detected_origin ? detectLanguage(detected_origin) : languageMap['default'];
+        // Use tts_language (smart selection) > detected_origin > default
+        const langSource = tts_language || detected_origin || 'english';
+        const langConfig = detectLanguage(langSource);
 
-        // Use native script for CJK languages, but skip for Vietnamese (already Latin-based)
-        const isVietnamese = detected_origin?.toLowerCase().includes('vietnamese');
+        // For English TTS, always use romanized name. For CJK, use native script if available.
+        const useNativeScript = native_script && langConfig.code !== 'en-US';
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
-        const textToSpeak = (native_script && !isVietnamese) ? native_script : cleanName;
+        const textToSpeak = useNativeScript ? native_script : cleanName;
 
         const ttsRequest = {
             input: { text: textToSpeak },

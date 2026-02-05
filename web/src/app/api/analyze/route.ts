@@ -69,10 +69,17 @@ PHONETIC RULES BY LANGUAGE (apply based on detected origin):
 
 **European names:** Use standard phonetic approximations.
 
+**IMPORTANT for Chinese names:** Detect the romanization style:
+- Hokkien (Singapore/Malaysia): Ong, Tan, Lim, Goh, Ng, Teo, Koh, Chua, Tay, Heng → tts_language: "english"
+- Cantonese (Hong Kong): Wong, Chan, Leung, Lau, Cheung, Ng, Tam → tts_language: "english"
+- Pinyin (Mainland China): Wang, Chen, Lin, Zhang, Liu, Huang → tts_language: "mandarin"
+If profile location is Singapore, Malaysia, Hong Kong, US, UK, Australia → default to "english" for Chinese names.
+
 Respond in JSON:
 {
     "confidence": "high" | "medium" | "low",
-    "detected_origin": "Language/culture of origin (e.g., 'Mandarin Chinese', 'Japanese', 'Korean')",
+    "detected_origin": "Language/culture of origin (e.g., 'Mandarin Chinese', 'Singaporean Chinese', 'Japanese', 'Korean')",
+    "tts_language": "The language for text-to-speech: 'english', 'mandarin', 'japanese', 'korean', 'vietnamese', etc. For Southeast Asian Chinese names, use 'english'.",
     "sounds_like": "Phonetic pronunciation following the rules above. For Chinese/Japanese/Korean/Vietnamese names, use family-name-first order (e.g., 'CHIU jyeh-CHWAN' not 'jyeh-CHWAN CHIU'). Use capital letters for stressed syllables.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s)",
@@ -117,6 +124,7 @@ Respond in JSON:
         const analysis = {
             confidence: rawAnalysis.confidence,
             detected_origin: rawAnalysis.detected_origin,
+            tts_language: rawAnalysis.tts_language || 'english', // For smart TTS voice selection
             sounds_like: rawAnalysis.sounds_like,
             pronunciation: rawAnalysis.sounds_like,
             native_script: rawAnalysis.native_script || null, // For TTS to use native characters
