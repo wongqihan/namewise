@@ -79,11 +79,13 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // Use native script if available (e.g., 邱杰权), otherwise use romanized name
-        const textToSpeak = native_script || name.replace(/\s*\([^)]*\)/g, '').trim();
-
         // Detect language from detected_origin (more reliable than parsing cultural_note)
         const langConfig = detected_origin ? detectLanguage(detected_origin) : languageMap['default'];
+
+        // Use native script for CJK languages, but skip for Vietnamese (already Latin-based)
+        const isVietnamese = detected_origin?.toLowerCase().includes('vietnamese');
+        const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
+        const textToSpeak = (native_script && !isVietnamese) ? native_script : cleanName;
 
         const ttsRequest = {
             input: { text: textToSpeak },
