@@ -296,9 +296,15 @@ function renderError(message) {
 // Load audio asynchronously from TTS endpoint
 async function loadAudioAsync(data, button) {
   try {
+    // For CJK cultures, reorder name to family-first to match phonetic display
+    let ttsName = selectedText;
+    if (isFamilyFirst(data.detected_origin) && data.components?.family_name && data.components?.given_name) {
+      ttsName = `${data.components.family_name} ${data.components.given_name}`;
+    }
+
     const result = await chrome.runtime.sendMessage({
       type: 'FETCH_TTS',
-      name: selectedText,
+      name: ttsName,
       native_script: data.native_script,
       tts_language: data.tts_language, // Smart language selection (e.g., 'english' for SG/MY Chinese)
       detected_origin: data.detected_origin,
