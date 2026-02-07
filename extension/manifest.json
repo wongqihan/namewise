@@ -4,8 +4,7 @@
     "version": "1.0.0",
     "description": "AI-powered name pronunciation and cultural etiquette guide for LinkedIn",
     "permissions": [
-        "activeTab",
-        "storage"
+        "activeTab"
     ],
     "host_permissions": [
         "https://www.linkedin.com/*"
