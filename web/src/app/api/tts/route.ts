@@ -88,11 +88,13 @@ export async function POST(request: NextRequest) {
         // Expand common name abbreviations and pronunciation hints for TTS
         const expandAbbreviations = (text: string) => {
             return text
-                .replace(/\bMd\b\.?/gi, 'Muhammad')
-                .replace(/\bMohd\b\.?/gi, 'Mohammad')
-                .replace(/\bSk\b\.?/gi, 'Sheikh')
+                .replace(/\bMd\b\.?/g, 'Muhammad')    // South Asian "Md" only (case-sensitive, not "MD")
+                .replace(/\bMohd\b\.?/g, 'Mohammad')   // Case-sensitive: "Mohd" not "MOHD"
+                .replace(/\bSk\b\.?/g, 'Sheikh')       // Case-sensitive
                 .replace(/\bDr\b\.?/gi, 'Doctor')
-                .replace(/\bPhD\b/gi, '') // Remove PhD suffix
+                .replace(/,?\s*\bMD\b/g, '')           // Remove "MD" medical degree suffix
+                .replace(/,?\s*\bPhD\b/gi, '')          // Remove PhD suffix
+                .replace(/,?\s*\bMBA\b/gi, '')          // Remove MBA suffix
                 // Pronunciation hints for tricky Chinese names
                 .replace(/\bNg\b/g, 'Ung') // Hokkien/Cantonese "Ng" sounds like "Ung"
                 .replace(/\bChi\b/g, 'Chee'); // Cantonese "Chi" sounds like "Chee", not "Kai"
