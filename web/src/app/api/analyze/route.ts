@@ -93,6 +93,7 @@ Respond in JSON:
     "tts_language": "Match the name's origin: 'arabic' for Arabic names, 'japanese' for Japanese, etc. Only Southern Chinese uses 'english'.",
     "has_english_name": "true if the name includes ANY English/Western given name (e.g., Alan, Andy, Brian, Daniel, David, Edward, Grace, Helen, Jenny, Justin, Kevin, Lisa, Michael, Michelle, Sam, Sarah, Sophie, Thomas, Tony), false otherwise. Any standard English or Western given name counts — not just these examples.",
     "sounds_like": "Phonetic pronunciation. For CJK names without English given name: family-first (WONG chee-HAHN). For CJK with English given name: English-first (AN-dee LOW). Use capitals for stress.",
+    "ipa": "IPA transcription of the full name for TTS phonemes. Use the name's NATIVE phonemes, not anglicized. Example: 'Yu Ning Kong' (Mandarin) → 'y niŋ kʰɔŋ'. 'Kenji Tanaka' (Japanese) → 'keɴdʑi tanaka'. Always provide this field.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s) - include English name if present",
     "family_name": "Family/surname",
@@ -140,6 +141,7 @@ Respond in JSON:
             has_english_name: rawAnalysis.has_english_name === true || rawAnalysis.has_english_name === 'true',
             sounds_like: rawAnalysis.sounds_like,
             pronunciation: rawAnalysis.sounds_like,
+            ipa: rawAnalysis.ipa || null, // IPA transcription for SSML phonemes
             native_script: rawAnalysis.native_script || null, // For TTS to use native characters
             components: {
                 given_name: rawAnalysis.given_name,

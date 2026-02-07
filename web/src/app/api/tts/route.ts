@@ -62,7 +62,7 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
     try {
-        const { name, native_script, tts_language, detected_origin, cultural_note } = await request.json();
+        const { name, native_script, ipa, tts_language, detected_origin, cultural_note } = await request.json();
 
         if (!name) {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
@@ -120,8 +120,21 @@ export async function POST(request: NextRequest) {
         const cleanName = name.replace(/\s*\([^)]*\)/g, '').trim();
         const textToSpeak = expandAbbreviations(useNativeScript ? cleanedNativeScript : cleanName);
 
+        // Build TTS request — use SSML with IPA phonemes when available
+        let ttsInput: { text?: string; ssml?: string };
+        if (ipa && !useNativeScript) {
+            // Wrap in SSML <phoneme> for precise pronunciation
+            const escapedText = textToSpeak.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const escapedIpa = ipa.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+            ttsInput = {
+                ssml: `<speak><phoneme alphabet="ipa" ph="${escapedIpa}">${escapedText}</phoneme></speak>`
+            };
+        } else {
+            ttsInput = { text: textToSpeak };
+        }
+
         const ttsRequest = {
-            input: { text: textToSpeak },
+            input: ttsInput,
             voice: {
                 languageCode: langConfig.code,
                 name: langConfig.voice,
