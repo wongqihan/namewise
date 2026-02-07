@@ -42,9 +42,10 @@ ${contextString ? `\nContext:\n${contextString}` : ''}
 PHONETIC RULES BY LANGUAGE (apply based on detected origin):
 
 **Mandarin Chinese (pinyin):**
+- "ü" / "yu" → "yü" (like French "u" in "lune", NOT "yoo"). Write as "yü" in sounds_like.
 - "ie" → "yeh" (not "ee"), "iu" → "yo", "ui" → "way", "üe" → "weh"
 - "q" → "ch", "x" → "sh", "zh" → "j", "c" → "ts", "z" → "dz"
-- Example: Jiequan → "jyeh-CHWAN", Xiaoming → "shyow-MING"
+- Example: Jiequan → "jyeh-CHWAN", Xiaoming → "shyow-MING", Yu → "yü" (not "yoo")
 
 **Japanese:**
 - Vowels are pure: a=ah, i=ee, u=oo, e=eh, o=oh
