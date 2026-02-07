@@ -90,7 +90,7 @@ Respond in JSON:
     "confidence": "high" | "medium" | "low",
     "detected_origin": "Language/culture of origin (e.g., 'Southern Chinese', 'Arabic', 'Japanese', 'Korean')",
     "tts_language": "Match the name's origin: 'arabic' for Arabic names, 'japanese' for Japanese, etc. Only Southern Chinese uses 'english'.",
-    "has_english_name": "true if the name includes an English/Western given name (e.g., Andy, Kevin, Justin), false otherwise",
+    "has_english_name": "true if the name includes ANY English/Western given name (e.g., Alan, Andy, Brian, Daniel, David, Edward, Grace, Helen, Jenny, Justin, Kevin, Lisa, Michael, Michelle, Sam, Sarah, Sophie, Thomas, Tony), false otherwise. Any standard English or Western given name counts — not just these examples.",
     "sounds_like": "Phonetic pronunciation. For CJK names without English given name: family-first (WONG chee-HAHN). For CJK with English given name: English-first (AN-dee LOW). Use capitals for stress.",
     "native_script": "Name in native script if applicable (e.g., 杰权邱 for Chinese). Null if already native or unknown.",
     "given_name": "Given/first name(s) - include English name if present",

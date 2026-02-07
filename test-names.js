@@ -53,6 +53,7 @@ const testCases = [
     { name: 'David Chen', expectedOrigin: 'Chinese', expectedVoice: 'english', hasEnglishName: true },
     { name: 'Michael Zhang', expectedOrigin: 'Chinese', expectedVoice: 'english', hasEnglishName: true },
     { name: 'Sophie Wang', expectedOrigin: 'Chinese', expectedVoice: 'english', hasEnglishName: true },
+    { name: 'Alan Guo', expectedOrigin: 'Chinese', expectedVoice: 'english', hasEnglishName: true },
 
     // =====================================================================
     // JAPANESE (Japanese TTS)

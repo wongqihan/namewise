@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NameWise Chrome Web Store Screenshots</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 80px;
+            padding: 60px;
+        }
+
+        .label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: -60px;
+        }
+
+        /* ===================== SHARED ===================== */
+        .slide {
+            width: 1280px;
+            height: 800px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Browser Chrome */
+        .browser {
+            width: 1060px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .browser-chrome {
+            background: #dee1e6;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-r {
+            background: #ed6a5e;
+        }
+
+        .dot-y {
+            background: #f5bf4f;
+        }
+
+        .dot-g {
+            background: #62c554;
+        }
+
+        .tab-area {
+            display: flex;
+            align-items: center;
+            margin-left: 12px;
+            flex: 1;
+        }
+
+        .tab {
+            background: #fff;
+            padding: 5px 14px;
+            border-radius: 6px 6px 0 0;
+            font-size: 11px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .li-badge {
+            width: 13px;
+            height: 13px;
+            background: #0a66c2;
+            border-radius: 2px;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .url-pill {
+            background: #f1f3f4;
+            border-radius: 16px;
+            padding: 3px 12px;
+            font-size: 11px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .url-pill .lock {
+            font-size: 9px;
+        }
+
+        /* LinkedIn Nav */
+        .li-nav {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            height: 48px;
+            gap: 20px;
+        }
+
+        .li-logo {
+            width: 28px;
+            height: 28px;
+            background: #0a66c2;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .li-search {
+            background: #eef3f8;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #888;
+            width: 220px;
+        }
+
+        .li-nav-items {
+            display: flex;
+            gap: 24px;
+            margin-left: auto;
+        }
+
+        .li-nav-item {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .li-nav-icon {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        /* LinkedIn Content */
+        .li-content {
+            position: relative;
+        }
+
+        .li-banner {
+            height: 120px;
+            background: linear-gradient(135deg, #6b8294 0%, #96a8b8 50%, #8a9cad 100%);
+        }
+
+        .li-avatar-wrap {
+            position: absolute;
+            top: 68px;
+            left: 28px;
+        }
+
+        .li-avatar {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            object-fit: cover;
+            display: block;
+            background: #ccc;
+        }
+
+        .li-profile-info {
+            padding: 60px 28px 16px;
+        }
+
+        .li-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #191919;
+        }
+
+        .li-headline {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .li-loc {
+            font-size: 12px;
+            color: #0a66c2;
+            margin-top: 4px;
+        }
+
+        .li-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .li-btn {
+            padding: 5px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .li-btn-primary {
+            background: #0a66c2;
+            color: #fff;
+        }
+
+        .li-btn-secondary {
+            background: transparent;
+            color: #666;
+            border: 1px solid #999;
+        }
+
+        /* NameWise Popup Card */
+        .nw-card {
+            position: absolute;
+            width: 370px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 16px;
+            padding: 20px 22px;
+            box-shadow:
+                0 0 0 1px rgba(139, 92, 246, 0.2),
+                0 12px 40px rgba(0, 0, 0, 0.12),
+                0 4px 12px rgba(139, 92, 246, 0.08);
+            z-index: 10;
+        }
+
+        .nw-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 2px;
+        }
+
+        .nw-hero {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a2e;
+            line-height: 1.15;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        .nw-row {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            line-height: 1.4;
+        }
+
+        .nw-row strong {
+            color: #222;
+        }
+
+        .nw-warn {
+            background: hsl(45, 100%, 90%);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 12px;
+            color: #6b5300;
+            margin: 10px 0 6px;
+            line-height: 1.4;
+        }
+
+        .nw-info {
+            background: hsl(200, 80%, 92%);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 12px;
+            color: #1a5276;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .nw-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .stress {
+            color: #7C3AED;
+            font-weight: 900;
+        }
+
+        /* ===================== SLIDE 1: HERO ===================== */
+        .s1 {
+            background: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .s1 .title {
+            text-align: center;
+            padding: 24px 0 16px;
+            font-size: 42px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -0.02em;
+        }
+
+        .s1 .browser {
+            flex: 1;
+        }
+
+        .s1 .nw-card {
+            top: 100px;
+            right: 50px;
+        }
+
+        /* ===================== SLIDE 2: JAPANESE ===================== */
+        .s2 {
+            background: linear-gradient(155deg, #0f0326 0%, #1a0a3e 35%, #0a4a56 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .s2 .title {
+            text-align: center;
+            padding: 26px 0 18px;
+            font-size: 46px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .s2 .browser {
+            flex: 1;
+        }
+
+        .s2 .li-banner {
+            background: linear-gradient(135deg, #0d6b6e, #14a3a8);
+        }
+
+        .s2 .nw-card {
+            top: 90px;
+            right: 50px;
+        }
+
+        /* ===================== SLIDE 3: ARABIC ===================== */
+        .s3 {
+            background: #efede8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .s3 .title {
+            text-align: center;
+            padding: 22px 0 14px;
+            font-size: 40px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -0.02em;
+            font-style: italic;
+        }
+
+        .s3 .browser {
+            flex: 1;
+        }
+
+        .s3 .li-banner {
+            background: linear-gradient(135deg, #8a7355, #c4b896);
+        }
+
+        .s3 .nw-card {
+            top: 80px;
+            right: 50px;
+            width: 400px;
+        }
+
+        /* ===================== SLIDE 4: HOW IT WORKS ===================== */
+        .s4 {
+            background: linear-gradient(155deg, #12032e 0%, #25105a 50%, #35187a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .s4 .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 44px;
+        }
+
+        .s4 .logo-img {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+        }
+
+        .s4 .logo-row h1 {
+            font-size: 44px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .steps-row {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 44px;
+        }
+
+        .step {
+            width: 300px;
+            padding: 36px 28px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(139, 92, 246, 0.05));
+            border: 2px solid rgba(139, 92, 246, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 8px 20px;
+        }
+
+        .badge span {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .badge strong {
+            color: #fff;
+        }
+
+        /* ===================== SLIDE 5: MULTICULTURAL ===================== */
+        .s5 {
+            background: linear-gradient(160deg, #f8f6ff 0%, #ede8ff 50%, #f0f4ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 36px 80px;
+        }
+
+        .s5 .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        .s5 .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        .s5 .logo-row h1 {
+            font-size: 46px;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -0.02em;
+        }
+
+        .s5 .sub {
+            font-size: 16px;
+            color: #7C3AED;
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 960px;
+        }
+
+        .gcard {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 16px;
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.06);
+        }
+
+        .gcard .flag {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .gcard .gname {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .gcard .gpron {
+            font-size: 14px;
+            color: #666;
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        .gcard .play {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Avatar placeholder for slides without user photo */
+        .avatar-placeholder {
+            background-color: #ddd;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect fill='%23ddd' width='120' height='120'/%3E%3Ccircle cx='60' cy='42' r='20' fill='%23bbb'/%3E%3Cellipse cx='60' cy='95' rx='30' ry='22' fill='%23bbb'/%3E%3C/svg%3E");
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== SLIDE 1: HERO ===== -->
+    <div class="label">Screenshot 1 — Hero</div>
+    <div class="slide s1" id="s1">
+        <div class="title">Pronounce Every Name Right</div>
+        <div class="browser">
+            <div class="browser-chrome">
+                <div class="dot dot-r"></div>
+                <div class="dot dot-y"></div>
+                <div class="dot dot-g"></div>
+                <div class="tab-area">
+                    <div class="tab"><span class="li-badge">in</span> Qi Han Wong | LinkedIn</div>
+                </div>
+                <div class="url-pill"><span class="lock">🔒</span> linkedin.com/in/qihanwong</div>
+            </div>
+            <div class="li-nav">
+                <div class="li-logo">in</div>
+                <div class="li-search">🔍 Search</div>
+                <div class="li-nav-items">
+                    <div class="li-nav-item"><span class="li-nav-icon">🏠</span>Home</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">👥</span>Network</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💼</span>Jobs</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💬</span>Messaging</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">🔔</span>Notifications</div>
+                </div>
+            </div>
+            <div class="li-content">
+                <div class="li-banner"></div>
+                <div class="li-avatar-wrap">
+                    <img class="li-avatar" src="user-photo.png" alt="Qi Han Wong">
+                </div>
+                <div class="li-profile-info">
+                    <div class="li-name">Qi Han Wong</div>
+                    <div class="li-headline">Product Manager · AI & Developer Tools</div>
+                    <div class="li-loc">Singapore, Singapore · 500+ connections</div>
+                    <div class="li-btns">
+                        <button class="li-btn li-btn-primary">+ Follow</button>
+                        <button class="li-btn li-btn-secondary">Message</button>
+                        <button class="li-btn li-btn-secondary">More</button>
+                    </div>
+                </div>
+
+                <!-- NameWise Popup -->
+                <div class="nw-card" style="top:100px; right:50px;">
+                    <div class="nw-header">Qi Han Wong</div>
+                    <div class="nw-hero">Chee Hahn Wong</div>
+                    <div class="nw-row">👤 <strong>Given:</strong> Qi Han &nbsp;|&nbsp; <strong>Family:</strong> Wong
+                    </div>
+                    <div class="nw-row">📍 <strong>Location:</strong> Singapore</div>
+                    <div class="nw-warn">⚠️ Use full 'Qi Han' – both words form the given name</div>
+                    <div class="nw-info">💡 In professional Singaporean contexts, first names are common</div>
+                    <button class="nw-btn">▶ Play Audio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 2: JAPANESE ===== -->
+    <div class="label">Screenshot 2 — Japanese</div>
+    <div class="slide s2" id="s2">
+        <div class="title">Works Across 30+ Languages</div>
+        <div class="browser">
+            <div class="browser-chrome">
+                <div class="dot dot-r"></div>
+                <div class="dot dot-y"></div>
+                <div class="dot dot-g"></div>
+                <div class="tab-area">
+                    <div class="tab"><span class="li-badge">in</span> Tanaka Yuki | LinkedIn</div>
+                </div>
+                <div class="url-pill"><span class="lock">🔒</span> linkedin.com/in/tanakayuki</div>
+            </div>
+            <div class="li-nav">
+                <div class="li-logo">in</div>
+                <div class="li-search">🔍 Search</div>
+                <div class="li-nav-items">
+                    <div class="li-nav-item"><span class="li-nav-icon">🏠</span>Home</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">👥</span>Network</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💼</span>Jobs</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💬</span>Messaging</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">🔔</span>Notifications</div>
+                </div>
+            </div>
+            <div class="li-content">
+                <div class="li-banner"></div>
+                <div class="li-avatar-wrap">
+                    <div class="li-avatar avatar-placeholder"></div>
+                </div>
+                <div class="li-profile-info">
+                    <div class="li-name">Tanaka Yuki</div>
+                    <div class="li-headline">Senior Software Engineer at Sony</div>
+                    <div class="li-loc">Tokyo, Japan · 350+ connections</div>
+                    <div class="li-btns">
+                        <button class="li-btn li-btn-primary">+ Follow</button>
+                        <button class="li-btn li-btn-secondary">Message</button>
+                    </div>
+                </div>
+
+                <div class="nw-card" style="top:90px; right:50px;">
+                    <div class="nw-header">Tanaka Yuki 🇯🇵</div>
+                    <div class="nw-hero">Tah-nah-kah Yoo-kee</div>
+                    <div class="nw-row">👤 <strong>Family:</strong> Tanaka &nbsp;|&nbsp; <strong>Given:</strong> Yuki
+                    </div>
+                    <div class="nw-row">🌐 <strong>Pattern:</strong> Japanese</div>
+                    <div class="nw-info">💡 In Japan, use family name + 'san' (Tanaka-san) in professional contexts
+                    </div>
+                    <button class="nw-btn">▶ Play Audio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 3: ARABIC ===== -->
+    <div class="label">Screenshot 3 — Arabic</div>
+    <div class="slide s3" id="s3">
+        <div class="title">Understand Name Structure & Etiquette</div>
+        <div class="browser">
+            <div class="browser-chrome">
+                <div class="dot dot-r"></div>
+                <div class="dot dot-y"></div>
+                <div class="dot dot-g"></div>
+                <div class="tab-area">
+                    <div class="tab"><span class="li-badge">in</span> Mohammed bin Khalid Al-Rashid</div>
+                </div>
+                <div class="url-pill"><span class="lock">🔒</span> linkedin.com/in/mohammed-bin-khalid</div>
+            </div>
+            <div class="li-nav">
+                <div class="li-logo">in</div>
+                <div class="li-search">🔍 Search</div>
+                <div class="li-nav-items">
+                    <div class="li-nav-item"><span class="li-nav-icon">🏠</span>Home</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">👥</span>Network</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💼</span>Jobs</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">💬</span>Messaging</div>
+                    <div class="li-nav-item"><span class="li-nav-icon">🔔</span>Notifications</div>
+                </div>
+            </div>
+            <div class="li-content">
+                <div class="li-banner"></div>
+                <div class="li-avatar-wrap">
+                    <div class="li-avatar avatar-placeholder"></div>
+                </div>
+                <div class="li-profile-info">
+                    <div class="li-name">Mohammed bin Khalid Al-Rashid</div>
+                    <div class="li-headline">Senior Consultant · Finance & Strategy</div>
+                    <div class="li-loc">Riyadh, Saudi Arabia · 400+ connections</div>
+                    <div class="li-btns">
+                        <button class="li-btn li-btn-primary">+ Follow</button>
+                        <button class="li-btn li-btn-secondary">Message</button>
+                    </div>
+                </div>
+
+                <div class="nw-card" style="top:80px; right:50px; width:400px;">
+                    <div class="nw-header">Mohammed bin Khalid Al-Rashid 🇸🇦</div>
+                    <div class="nw-hero" style="font-size:24px;">Moh-<span class="stress">HAM</span>-med bin Kha-<span
+                            class="stress">LEED</span> Al-Ra-<span class="stress">SHEED</span></div>
+                    <div class="nw-row">👤 <strong>Given:</strong> Mohammed</div>
+                    <div class="nw-row" style="margin-left:22px;"><strong>Patronymic:</strong> bin Khalid &nbsp;|&nbsp;
+                        <strong>Family:</strong> Al-Rashid</div>
+                    <div class="nw-info">💡 Address as 'Mr. Mohammed' or full name in professional contexts</div>
+                    <button class="nw-btn">▶ Play Audio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 4: HOW IT WORKS ===== -->
+    <div class="label">Screenshot 4 — How It Works</div>
+    <div class="slide s4" id="s4">
+        <div class="logo-row">
+            <img class="logo-img" src="../namewise-store-icon.png" alt="NameWise"
+                onerror="this.style.background='linear-gradient(135deg,#8B5CF6,#7C3AED)';this.style.display='flex';">
+            <h1>How NameWise Works</h1>
+        </div>
+        <div class="steps-row">
+            <div class="step">
+                <div class="step-icon">👆</div>
+                <h3>1. Visit a Profile</h3>
+                <p>Browse any LinkedIn profile page and select a name</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🧠</div>
+                <h3>2. AI Analyzes</h3>
+                <p>Gemini AI identifies origin, pronunciation & cultural context</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🔊</div>
+                <h3>3. Hear & Learn</h3>
+                <p>Listen to native pronunciation with cultural tips</p>
+            </div>
+        </div>
+        <div class="badge">
+            <span>✨</span>
+            <span>Powered by <strong>Google Gemini AI</strong></span>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 5: MULTICULTURAL ===== -->
+    <div class="label">Screenshot 5 — Multicultural</div>
+    <div class="slide s5" id="s5">
+        <div class="logo-row">
+            <img class="logo-img" src="../namewise-store-icon.png" alt="NameWise"
+                onerror="this.style.background='linear-gradient(135deg,#8B5CF6,#7C3AED)';this.style.display='flex';">
+            <h1>Every Name, Every Culture</h1>
+        </div>
+        <div class="sub">Accurate pronunciation for names from around the world</div>
+        <div class="grid">
+            <div class="gcard">
+                <div>
+                    <div class="flag">🇰🇷</div>
+                    <div class="gname">Kim Ji-soo</div>
+                    <div class="gpron">Keem Jee-soo</div>
+                </div>
+                <button class="play">▶</button>
+            </div>
+            <div class="gcard">
+                <div>
+                    <div class="flag">🇻🇳</div>
+                    <div class="gname">Nguyen Minh Chau</div>
+                    <div class="gpron">Nwin Min Chow</div>
+                </div>
+                <button class="play">▶</button>
+            </div>
+            <div class="gcard">
+                <div>
+                    <div class="flag">🇮🇳</div>
+                    <div class="gname">Priya Krishnamurthy</div>
+                    <div class="gpron">PREE-yah Krish-nah-MOOR-thee</div>
+                </div>
+                <button class="play">▶</button>
+            </div>
+            <div class="gcard">
+                <div>
+                    <div class="flag">🇪🇸</div>
+                    <div class="gname">Garcia Lopez, Maria</div>
+                    <div class="gpron">Gar-SEE-ah LO-pez</div>
+                </div>
+                <button class="play">▶</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

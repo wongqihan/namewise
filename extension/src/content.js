@@ -17,6 +17,41 @@ function isFamilyFirst(origin) {
   return familyFirstCultures.some(c => origin.toLowerCase().includes(c));
 }
 
+// Deterministic English name list — fallback when Gemini misclassifies has_english_name
+const COMMON_ENGLISH_NAMES = new Set([
+  'aaron', 'adam', 'adrian', 'alan', 'albert', 'alex', 'alexander', 'alfred', 'alice', 'amanda',
+  'amber', 'amy', 'andrew', 'andy', 'angela', 'ann', 'anna', 'anne', 'anthony', 'ashley',
+  'barbara', 'benjamin', 'betty', 'bill', 'bob', 'brandon', 'brian', 'bruce', 'carl', 'carol',
+  'caroline', 'catherine', 'charles', 'charlie', 'charlotte', 'chris', 'christian', 'christina',
+  'christopher', 'claire', 'cynthia', 'dale', 'dan', 'daniel', 'david', 'deborah', 'dennis',
+  'diana', 'donald', 'donna', 'dorothy', 'douglas', 'dylan', 'edward', 'elizabeth', 'emily',
+  'emma', 'eric', 'eugene', 'eva', 'evan', 'evelyn', 'frank', 'fred', 'gary', 'george', 'grace',
+  'greg', 'gregory', 'hannah', 'harold', 'harry', 'heather', 'helen', 'henry', 'ivy', 'jack',
+  'jacob', 'james', 'jane', 'janet', 'jason', 'jean', 'jeff', 'jeffrey', 'jennifer', 'jenny',
+  'jeremy', 'jessica', 'jill', 'jimmy', 'joan', 'joe', 'john', 'jonathan', 'joseph', 'joyce',
+  'judith', 'judy', 'julia', 'julie', 'justin', 'karen', 'kate', 'katherine', 'kathleen', 'kathryn',
+  'kathy', 'keith', 'kelly', 'ken', 'kenneth', 'kevin', 'kim', 'kimberly', 'larry', 'laura',
+  'lauren', 'lawrence', 'lee', 'leonard', 'leslie', 'lily', 'linda', 'lisa', 'louis', 'lucy',
+  'lynn', 'mandy', 'margaret', 'maria', 'marie', 'marilyn', 'mark', 'martin', 'mary', 'matthew',
+  'max', 'megan', 'melissa', 'michael', 'michelle', 'mike', 'nancy', 'natalie', 'nathan',
+  'nicholas', 'nicole', 'olivia', 'oscar', 'pamela', 'patricia', 'patrick', 'paul', 'paula',
+  'peter', 'philip', 'rachel', 'ralph', 'randy', 'raymond', 'rebecca', 'richard', 'robert',
+  'robin', 'roger', 'ronald', 'rose', 'ruby', 'russell', 'ruth', 'ryan', 'sally', 'sam',
+  'samantha', 'samuel', 'sandra', 'sarah', 'scott', 'sean', 'sharon', 'shirley', 'simon',
+  'sophia', 'sophie', 'stanley', 'stephanie', 'stephen', 'steve', 'steven', 'susan', 'teresa',
+  'terry', 'thomas', 'timothy', 'tina', 'todd', 'tom', 'tommy', 'tony', 'tracy', 'tyler',
+  'vanessa', 'victor', 'victoria', 'vincent', 'virginia', 'vivian', 'walter', 'wayne', 'wendy',
+  'william', 'zachary'
+]);
+
+// Client-side fallback: check if the FIRST word is a common English given name
+// Only checks first word to avoid false positives on surnames like Lee/Kim
+function hasEnglishGivenName(name) {
+  if (!name) return false;
+  const firstWord = name.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/)[0];
+  return COMMON_ENGLISH_NAMES.has(firstWord);
+}
+
 // Initialize on page load
 document.addEventListener('mouseup', handleSelection);
 document.addEventListener('keydown', handleKeydown);
@@ -188,6 +223,11 @@ async function showCard() {
     });
 
     if (result.success) {
+      // Client-side fallback: if Gemini missed an English given name, override
+      if (!result.data.has_english_name && hasEnglishGivenName(selectedText)) {
+        console.log('[NameWise] Client-side English name override for:', selectedText);
+        result.data.has_english_name = true;
+      }
       renderCardContent(result.data);
     } else {
       renderError(result.error);
