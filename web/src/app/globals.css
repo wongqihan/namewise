@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --purple-50: hsl(260, 80%, 98%);
+  --purple-100: hsl(260, 70%, 95%);
+  --purple-200: hsl(260, 60%, 88%);
+  --purple-400: hsl(260, 70%, 65%);
+  --purple-500: hsl(260, 80%, 55%);
+  --purple-600: hsl(260, 80%, 48%);
+  --purple-700: hsl(260, 80%, 40%);
+  --purple-900: hsl(260, 60%, 15%);
+  --green-500: hsl(140, 60%, 40%);
+  --green-100: hsl(140, 50%, 92%);
+  --amber-500: hsl(35, 90%, 50%);
+  --amber-50: hsl(35, 90%, 96%);
+  --amber-100: hsl(35, 80%, 90%);
+  --blue-50: hsl(210, 80%, 96%);
+  --blue-100: hsl(210, 60%, 90%);
+  --blue-600: hsl(210, 80%, 45%);
+  --gray-50: hsl(220, 20%, 97%);
+  --gray-100: hsl(220, 15%, 94%);
+  --gray-200: hsl(220, 13%, 88%);
+  --gray-400: hsl(220, 10%, 55%);
+  --gray-500: hsl(220, 10%, 42%);
+  --gray-600: hsl(220, 12%, 32%);
+  --gray-800: hsl(220, 20%, 14%);
+  --gray-900: hsl(220, 25%, 8%);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--background, #ffffff);
+  --color-foreground: var(--foreground, #171717);
+  --font-sans: var(--font-inter);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, var(--purple-50), var(--blue-50));
+  color: var(--gray-800);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
