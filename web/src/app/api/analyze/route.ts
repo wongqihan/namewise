@@ -1,26 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limit';
 
 // Force dynamic rendering (skip static generation)
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// CORS headers for Chrome extension
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-};
+// Max name length to prevent prompt injection / token waste
+const MAX_NAME_LENGTH = 100;
 
-export async function OPTIONS() {
-    return NextResponse.json({}, { headers: corsHeaders });
+function getCorsHeaders(request: NextRequest) {
+    const origin = request.headers.get('origin');
+    return {
+        'Access-Control-Allow-Origin': origin || '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    };
+}
+
+export async function OPTIONS(request: NextRequest) {
+    return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 export async function POST(request: NextRequest) {
+    const corsHeaders = getCorsHeaders(request);
+
     try {
+        // Rate limiting: 15 requests per minute per IP
+        const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+        const { success: rateLimitOk, remaining } = rateLimit(ip, { maxRequests: 15, windowMs: 60_000 });
+        if (!rateLimitOk) {
+            return NextResponse.json(
+                { error: 'Too many requests. Please try again later.' },
+                { status: 429, headers: { ...corsHeaders, 'Retry-After': '60' } }
+            );
+        }
+
         const { name, context } = await request.json();
 
-        if (!name) {
+        if (!name || typeof name !== 'string') {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
+        }
+
+        if (name.length > MAX_NAME_LENGTH) {
+            return NextResponse.json(
+                { error: `Name must be ${MAX_NAME_LENGTH} characters or less` },
+                { status: 400, headers: corsHeaders }
+            );
         }
 
         const apiKey = process.env.GEMINI_API_KEY;

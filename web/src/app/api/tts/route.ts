@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limit';
 
 // Force dynamic rendering (skip static generation)
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// CORS headers for Chrome extension
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-};
+const MAX_NAME_LENGTH = 100;
+
+function getCorsHeaders(request: NextRequest) {
+    const origin = request.headers.get('origin');
+    return {
+        'Access-Control-Allow-Origin': origin || '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    };
+}
 
 // Language code mapping
 const languageMap: { [key: string]: { code: string; voice: string } } = {
@@ -56,16 +61,35 @@ function detectLanguage(culturalNote: string): { code: string; voice: string } {
     return languageMap['default'];
 }
 
-export async function OPTIONS() {
-    return NextResponse.json({}, { headers: corsHeaders });
+export async function OPTIONS(request: NextRequest) {
+    return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 export async function POST(request: NextRequest) {
+    const corsHeaders = getCorsHeaders(request);
+
     try {
+        // Rate limiting: 10 requests per minute per IP (TTS is expensive)
+        const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+        const { success: rateLimitOk } = rateLimit(ip, { maxRequests: 10, windowMs: 60_000 });
+        if (!rateLimitOk) {
+            return NextResponse.json(
+                { error: 'Too many requests. Please try again later.' },
+                { status: 429, headers: { ...corsHeaders, 'Retry-After': '60' } }
+            );
+        }
+
         const { name, native_script, tts_language, detected_origin, cultural_note } = await request.json();
 
-        if (!name) {
+        if (!name || typeof name !== 'string') {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
+        }
+
+        if (name.length > MAX_NAME_LENGTH) {
+            return NextResponse.json(
+                { error: `Name must be ${MAX_NAME_LENGTH} characters or less` },
+                { status: 400, headers: corsHeaders }
+            );
         }
 
         // Dynamic import to avoid build-time evaluation
