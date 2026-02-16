@@ -192,6 +192,8 @@ export default function Home() {
           padding: '6px',
           display: 'flex',
           gap: '6px',
+          overflow: 'hidden',
+          boxSizing: 'border-box',
         }}>
           <input
             type="text"
@@ -200,6 +202,7 @@ export default function Home() {
             placeholder="Enter a name..."
             style={{
               flex: 1,
+              minWidth: 0,
               padding: '14px 16px',
               border: 'none',
               outline: 'none',
@@ -208,6 +211,7 @@ export default function Home() {
               background: 'transparent',
               color: 'hsl(220, 20%, 14%)',
               fontFamily: 'inherit',
+              boxSizing: 'border-box',
             }}
           />
           <button
@@ -225,6 +229,8 @@ export default function Home() {
               transition: 'all 0.2s',
               fontFamily: 'inherit',
               whiteSpace: 'nowrap',
+              flexShrink: 0,
+              boxSizing: 'border-box',
             }}
           >
             {loading ? '...' : 'Analyze'}
