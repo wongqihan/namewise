@@ -79,7 +79,7 @@ export default function Home() {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: n.trim(), context: '' }),
+        body: JSON.stringify({ name: n.trim(), context: '', source: 'webapp' }),
       });
       if (!res.ok) throw new Error('Analysis failed');
       const data = await res.json();

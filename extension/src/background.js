@@ -28,7 +28,7 @@ async function analyzeName(name, context) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, context }),
+        body: JSON.stringify({ name, context, source: 'extension' }),
     });
 
     if (!response.ok) {

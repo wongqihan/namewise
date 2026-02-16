@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { rateLimit } from '@/lib/rate-limit';
+import { logAnalysis, hashString } from '@/lib/analytics';
 
 // Force dynamic rendering (skip static generation)
 export const dynamic = 'force-dynamic';
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const { name, context } = await request.json();
+        const { name, context, source } = await request.json();
 
         if (!name || typeof name !== 'string') {
             return NextResponse.json({ error: 'Name is required' }, { status: 400, headers: corsHeaders });
@@ -174,6 +175,17 @@ Respond in JSON:
             warnings: rawAnalysis.formality_warning ? [rawAnalysis.formality_warning] : [],
             cultural_note: rawAnalysis.cultural_note,
         };
+
+        // Log analytics async (fire-and-forget)
+        const ipForHash = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+        hashString(ipForHash).then(ip_hash => {
+            logAnalysis({
+                source: source === 'extension' ? 'extension' : source === 'webapp' ? 'webapp' : 'unknown',
+                detected_origin: analysis.detected_origin,
+                confidence: analysis.confidence,
+                ip_hash,
+            });
+        });
 
         return NextResponse.json(analysis, { headers: corsHeaders });
 
