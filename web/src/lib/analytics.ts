@@ -1,8 +1,8 @@
 // Lightweight Supabase analytics logger for NameWise
 // Logs usage data async (fire-and-forget) so it never blocks API responses
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://uaqytphsufutdsmhrskf.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const SUPABASE_URL = 'https://uaqytphsufutdsmhrskf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhcXl0cGhzdWZ1dGRzbWhyc2tmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyOTg1NTEsImV4cCI6MjA4MTg3NDU1MX0.BNR3CnJCk1TybI0DBvZYZlIXP05OeapFwx7RqKbcqkE';
 
 interface AnalyticsEvent {
     source: 'extension' | 'webapp' | 'unknown';
