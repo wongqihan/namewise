@@ -4,8 +4,6 @@ import type { NextRequest } from 'next/server';
 // Allowed origins — only your webapp and Chrome extensions
 const ALLOWED_ORIGINS = [
     'https://namewise-api-107651002763.asia-southeast1.run.app',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
 ];
 
 function isAllowedOrigin(origin: string | null): boolean {
